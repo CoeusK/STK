@@ -169,16 +169,10 @@ var sArrSuggested = new Array();
 			}
 			
 			
-			//输入框值发生改变的时候执行函数，这里的事件用判断处理浏览器兼容性;
-			if($.browser.msie){
-				$(this).bind("propertychange",function(){
-					valChange();
-				})
-			}else{
-				$(this).bind("input",function(){
-					valChange();
-				})
-			}
+			//输入框值发生改变的时候执行函数
+			$(this).bind("input",function(){
+				valChange();
+			})
 			
 
 					
