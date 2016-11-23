@@ -107,7 +107,7 @@ function getData() {
 
 function refreshData()
 {
-  var dDate=new Date();
+  var d=new Date();
   var fhour = d.getUTCHours()+d.getUTCMinutes()/60+8;
   if ((fhour<=11.6 && ihour>=9.15) || (fhour<=15.1 && ihour>=12.9 ))
   {
