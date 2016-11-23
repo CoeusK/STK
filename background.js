@@ -77,7 +77,7 @@ function getData() {
     if ( i != (maxNumBg -1)) httpReq = httpReq+",";
   }
   //alert(httpReq);
-	req.open("GET", httpReq, false)
+	req.open("GET", httpReq)
 	req.onerror = function() 
 	{
   	//setTimeout(getData,refreshInterval);
