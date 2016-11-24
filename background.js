@@ -77,7 +77,7 @@ function getData() {
     if ( i != (maxNumBg -1)) httpReq = httpReq+",";
   }
   //alert(httpReq);
-	req.open("GET", httpReq, false)
+	req.open("GET", httpReq)
 	req.onerror = function() 
 	{
   	//setTimeout(getData,refreshInterval);
@@ -107,7 +107,7 @@ function getData() {
 
 function refreshData()
 {
-  var dDate=new Date();
+  var d=new Date();
   var fhour = d.getUTCHours()+d.getUTCMinutes()/60+8;
   if ((fhour<=11.6 && fhour>=9.15) || (fhour<=15.1 && fhour>=12.9 ))
   {
