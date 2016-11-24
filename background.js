@@ -109,7 +109,7 @@ function refreshData()
 {
   var dDate=new Date();
   var fhour = d.getUTCHours()+d.getUTCMinutes()/60+8;
-  if ((fhour<=11.6 && ihour>=9.15) || (fhour<=15.1 && ihour>=12.9 ))
+  if ((fhour<=11.6 && fhour>=9.15) || (fhour<=15.1 && fhour>=12.9 ))
   {
     var iDay = d.getUTCDay();
     if ( iDay>0 && iDay<6)
