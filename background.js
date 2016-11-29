@@ -60,10 +60,11 @@ chrome.browserAction.setBadgeBackgroundColor({color:[r, g, b, 255]});
 function badgeRefresh() {
   if (stockDetail[4][priItemId] >= 0) {
     chrome.browserAction.setBadgeBackgroundColor({color:[150, 0, 0, 255]});
+    chrome.browserAction.setBadgeText({text: stockDetail[4][priItemId].toString()});
   } else {
     chrome.browserAction.setBadgeBackgroundColor({color:[0, 150, 0, 255]});
+    chrome.browserAction.setBadgeText({text: stockDetail[4][priItemId].toString().substr(1)});
   }
-  chrome.browserAction.setBadgeText({text: stockDetail[4][priItemId].toString()});
   chrome.browserAction.setTitle({title: stockDetail[0][priItemId]+" "+stockDetail[2][priItemId]+" "+stockDetail[3][priItemId]+" "+stockDetail[4][priItemId]+"%" });
   //alert(stockDetail[0][priItemId]+"  "+stockDetail[2][priItemId]);
 }
@@ -109,7 +110,7 @@ function refreshData()
 {
   var d=new Date();
   var fhour = d.getUTCHours()+d.getUTCMinutes()/60+8;
-  if ((fhour<=11.6 && fhour>=9.15) || (fhour<=15.1 && fhour>=12.9 ))
+  if ((fhour<=11.6 && fhour>=9.25) || (fhour<=15.1 && fhour>=13 ))
   {
     var iDay = d.getUTCDay();
     if ( iDay>0 && iDay<6)
