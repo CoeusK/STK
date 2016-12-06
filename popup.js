@@ -3,7 +3,7 @@ var bp = chrome.extension.getBackgroundPage();
 ////load stored data
 document.addEventListener('DOMContentLoaded', function() {
     for (var i = 0; i < bp.maxNumBg; i++) {
-        document.getElementById("stkCode1").value = bp.stockDetail[1][i];
+        document.getElementById("stkCode1").value = bp.stockDetail[i].num;
     }
     refreshData()
 })
@@ -12,9 +12,9 @@ function refreshData() {
     for (var i = 0; i < bp.maxNumBg; i++) {
         //document.getElementById("stkCode1").value=bp.stockDetail[1][i];
         //$("#stkCode1").val(bp.stockDetail[0][i]);
-        document.getElementById("name1").innerHTML = bp.stockDetail[2][i];
-        document.getElementById("price1").innerHTML = bp.stockDetail[3][i];
-        document.getElementById("percentage1").innerHTML = bp.stockDetail[4][i] + "%";
+        document.getElementById("name1").innerHTML = bp.stockDetail[i].name;
+        document.getElementById("price1").innerHTML = bp.stockDetail[i].curPrice;
+        document.getElementById("percentage1").innerHTML = bp.stockDetail[i].percent + "%";
     }
 }
 //Indicate if it will be the first key Down
@@ -169,7 +169,7 @@ var sArrSuggested = new Array();
 })(jQuery)
 
 function saveData(iId, sCode, sNum) {
-    localStorage["stkCode" + iId] = bp.stockDetail[0][iId] = sCode;
-    localStorage["stkNum" + iId] = bp.stockDetail[1][iId] = sNum;
+    localStorage["stkCode" + iId] = bp.stockDetail[iId].code = sCode;
+    localStorage["stkNum" + iId] = bp.stockDetail[iId].num = sNum;
     bp.getData();
 }

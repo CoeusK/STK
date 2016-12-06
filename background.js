@@ -9,19 +9,36 @@ var req = new XMLHttpRequest();
 var popupRefresh = null;
 var rates = null;
 var defPrimaryItemId = 0;
-var stockDetail = new Array();
-stockDetail[0] = new Array(); //Code
-stockDetail[1] = new Array(); //Num
-stockDetail[2] = new Array(); //Name
-stockDetail[3] = new Array(); //Current Price
-stockDetail[4] = new Array(); //Percentage
-for (var i = 0; i < maxItemNum; i++) {
-    stockDetail[0][i] = "";
-    stockDetail[1][i] = "";
-    stockDetail[2][i] = "";
-    stockDetail[3][i] = 0.0;
-    stockDetail[4][i] = 0.0;
+
+function Stock(code, num, name, curPrice, percent) {
+    this.code = code;
+    this.num = num;
+    this.name = name;
+    this.curPrice = curPrice;
+    this.percent = percent;
 }
+
+var stockDetail = new Array();
+stockDetail[0] = new Stock("sh000001", "000001", "", 0.0, 0.0);
+stockDetail[1] = new Stock("", "", "", 0.0, 0.0);
+stockDetail[2] = new Stock("", "", "", 0.0, 0.0);
+stockDetail[3] = new Stock("", "", "", 0.0, 0.0);
+stockDetail[4] = new Stock("", "", "", 0.0, 0.0);
+
+//stockDetail[0] = new Array(); //Code
+//stockDetail[1] = new Array(); //Num
+//stockDetail[2] = new Array(); //Name
+//stockDetail[3] = new Array(); //Current Price
+//stockDetail[4] = new Array(); //Percentage
+//for (var i = 0; i < maxItemNum; i++) {
+//    stockDetail[0][i] = "";
+//    stockDetail[1][i] = "";
+//    stockDetail[2][i] = "";
+//    stockDetail[3][i] = 0.0;
+//    stockDetail[4][i] = 0.0;
+//}
+
+
 ////Initialize 
 //stockDetail[0][0] = "sh000001";
 //stockDetail[0][1] = "sz399107";
@@ -36,8 +53,8 @@ var maxNumBg = parseInt(localStorage.maxNumBg, 10) || defMaxNum;
 var refreshInterval = parseInt(localStorage.refreshInterval, 10) || defTimeout;
 var priItemId = parseInt(localStorage.priItemId, 10) || defPrimaryItemId;
 for (var i = 0; i < maxNumBg; i++) {
-    stockDetail[0][i] = localStorage.getItem("stkCode" + i) || "sh000001";
-    stockDetail[1][i] = localStorage.getItem("stkNum" + i) || "000001";
+    stockDetail[i].code = localStorage.getItem("stkCode" + i) || "sh000001";
+    stockDetail[i].num = localStorage.getItem("stkNum" + i) || "000001";
 }
 getData();
 refreshData();
@@ -46,23 +63,23 @@ chrome.browserAction.setBadgeBackgroundColor({
 });
 
 function badgeRefresh() {
-    if (stockDetail[4][priItemId] >= 0) {
+    if (stockDetail[priItemId].percent >= 0) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: [150, 0, 0, 255]
         });
         chrome.browserAction.setBadgeText({
-            text: stockDetail[4][priItemId].toString()
+            text: stockDetail[priItemId].percent.toString()
         });
     } else {
         chrome.browserAction.setBadgeBackgroundColor({
             color: [0, 150, 0, 255]
         });
         chrome.browserAction.setBadgeText({
-            text: stockDetail[4][priItemId].toString().substr(1)
+            text: stockDetail[priItemId].percent.toString().substr(1)
         });
     }
     chrome.browserAction.setTitle({
-        title: stockDetail[0][priItemId] + " " + stockDetail[2][priItemId] + " " + stockDetail[3][priItemId] + " " + stockDetail[4][priItemId] + "%"
+        title: stockDetail[priItemId].code + " " + stockDetail[priItemId].name + " " + stockDetail[priItemId].curPrice + " " + stockDetail[priItemId].percent + "%"
     });
     //alert(stockDetail[0][priItemId]+"  "+stockDetail[2][priItemId]);
 }
@@ -71,7 +88,7 @@ function getData() {
     ////  form the httpRequest
     httpReq = "http://hq.sinajs.cn/list=";
     for (i = 0; i < maxNumBg; i++) {
-        httpReq = httpReq + stockDetail[0][i];
+        httpReq = httpReq + stockDetail[i].code;
         //// Add "," except the last one
         if (i != (maxNumBg - 1)) httpReq = httpReq + ",";
     }
@@ -126,15 +143,15 @@ function parseStockData(response) {
             rawData = strArray[1].substr(1, strArray[1].length - 3);
             //alert(rawData);
             dataArray = rawData.split(",");
-            stockDetail[2][i - 1] = dataArray[0];
-            stockDetail[3][i - 1] = dataArray[3];
+            stockDetail[i - 1].name = dataArray[0];
+            stockDetail[i - 1].curPrice = dataArray[3];
             ////Calculate Percentage
-            stockDetail[4][i - 1] = (Math.floor((dataArray[3] - dataArray[2]) / dataArray[2] * 10000 + 0.5)) / 100;
+            stockDetail[i - 1].percent = (Math.floor((dataArray[3] - dataArray[2]) / dataArray[2] * 10000 + 0.5)) / 100;
             //alert(stockDetail[0][i-1]+"  "+stockDetail[1][i-1]+"  "+stockDetail[2][i-1]+"  "+stockDetail[3][i-1]);
         } else {
-            stockDetail[2][i - 1] = "N/A";
-            stockDetail[3][i - 1] = "0.00";
-            stockDetail[4][i - 1] = "0.00";
+            stockDetail[i - 1].name = "N/A";
+            stockDetail[i - 1].curPrice = "0.00";
+            stockDetail[i - 1].percent = "0.00";
         }
     }
 }
