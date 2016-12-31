@@ -1,0 +1,62 @@
+@charset "UTF-8";
+.icons,
+.theme-dark .icons,
+.icons.dark {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  background-image: url(buttons.png?5);
+  background-repeat: no-repeat;
+  vertical-align: text-top; }
+
+  .icons.cog {
+  background-position: 0px 0; }
+
+  .icons.left-arrow {
+  background-position: -32px -32px; }
+
+  .icons.star {
+  background-position: -64px 0; }
+
+  .icons.gold-star {
+    background-position: -288px -32px; }
+
+
+  .button {
+  cursor: pointer;
+  width: 24px;
+  height: 22px;
+  line-height: 22px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  background: #fcfcfc;
+  background: -moz-linear-gradient(top, #fcfcfc 0%, #d2d3d6 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fcfcfc), color-stop(100%, #d2d3d6));
+  background: -webkit-linear-gradient(top, #fcfcfc 0%, #d2d3d6 100%);
+  background: -o-linear-gradient(top, #fcfcfc 0%, #d2d3d6 100%);
+  background: -ms-linear-gradient(top, #fcfcfc 0%, #d2d3d6 100%);
+  background: linear-gradient(to bottom, #fcfcfc 0%, #d2d3d6 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 1px 0 rgba(255, 255, 255, 0.45);
+  margin: 1px;
+  font-size: 13px;
+  background-repeat: no-repeat;
+  text-align: center;
+  background-origin: border-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box; }
+
+.no-touch .button:hover {
+  border: 1px solid rgba(0, 0, 0, 0.35); }
+
+.button:active,
+.button.active {
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  background: #efefef;
+  background: -moz-linear-gradient(top, #efefef 0%, #c7c8cc 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #efefef), color-stop(100%, #c7c8cc));
+  background: -webkit-linear-gradient(top, #efefef 0%, #c7c8cc 100%);
+  background: -ms-linear-gradient(top, #efefef 0%, #c7c8cc 100%);
+  background: linear-gradient(to bottom, #efefef 0%, #c7c8cc 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.3); }
