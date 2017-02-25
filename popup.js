@@ -5,17 +5,38 @@ document.addEventListener('DOMContentLoaded', function() {
     for (var i = 0; i < bp.maxNumBg; i++) {
         document.getElementById("stkCode1").value = bp.stockDetail[i].num;
     }
-    refreshData()
+    refreshData();
+    $("#stkSetting").hide();
+    updateConfig();
+
+    $("#setting").click(function(){ 
+        $("#stkDetail").hide();
+        $("#stkSetting").show();
+    });
+
+    $("#back2detail").click(function(){
+        $("#stkDetail").show();
+        $("#stkSetting").hide();
+    });
+
+
 })
+
 
 function refreshData() {
     for (var i = 0; i < bp.maxNumBg; i++) {
-        //document.getElementById("stkCode1").value=bp.stockDetail[1][i];
-        //$("#stkCode1").val(bp.stockDetail[0][i]);
-        document.getElementById("name1").innerHTML = bp.stockDetail[i].name;
-        document.getElementById("price1").innerHTML = bp.stockDetail[i].curPrice;
-        document.getElementById("percentage1").innerHTML = bp.stockDetail[i].percent + "%";
+
+        //if(bp.stockDetail[i].active == 1) {
+          $(".stkdetail .stkname").eq(i).html(bp.stockDetail[i].name);
+          $(".stkdetail .stkprice").eq(i).html(bp.stockDetail[i].curPrice);
+          $(".stkdetail .stkpercent").eq(i).html(bp.stockDetail[i].percent + "%");
+        //}
     }
+}
+
+function updateConfig() {
+    $(".stkconfig .stkcode").eq(0).html(bp.stockDetail[0].code); 
+    $(".stkconfig .stkname").eq(0).html(bp.stockDetail[0].name); 
 }
 //Indicate if it will be the first key Down
 iFirstKeyDown = 1;

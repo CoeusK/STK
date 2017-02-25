@@ -10,7 +10,7 @@ var popupRefresh = null;
 var rates = null;
 var defPrimaryItemId = 0;
 
-function Stock(code, num, name, curPrice, percent) {
+function Stock(code, num, name, curPrice, percent, active) {
     this.code = code;
     this.num = num;
     this.name = name;
@@ -18,11 +18,11 @@ function Stock(code, num, name, curPrice, percent) {
     this.percent = percent;
 }
 var stockDetail = new Array();
-stockDetail[0] = new Stock("sh000001", "000001", "", 0.0, 0.0);
-stockDetail[1] = new Stock("", "", "", 0.0, 0.0);
-stockDetail[2] = new Stock("", "", "", 0.0, 0.0);
-stockDetail[3] = new Stock("", "", "", 0.0, 0.0);
-stockDetail[4] = new Stock("", "", "", 0.0, 0.0);
+stockDetail[0] = new Stock("sh000001", "000001", "", 0.0, 0.0, 1);
+stockDetail[1] = new Stock("", "", "", 0.0, 0.0, 0);
+stockDetail[2] = new Stock("", "", "", 0.0, 0.0, 0);
+stockDetail[3] = new Stock("", "", "", 0.0, 0.0, 0);
+stockDetail[4] = new Stock("", "", "", 0.0, 0.0, 0);
 //stockDetail[0] = new Array(); //Code
 //stockDetail[1] = new Array(); //Num
 //stockDetail[2] = new Array(); //Name
