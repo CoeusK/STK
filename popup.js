@@ -1,9 +1,19 @@
 // JavaScript Document
 var bp = chrome.extension.getBackgroundPage();
 
-var oTempStkNum; 
-var oTempStkCode;
-
+function StockInfo(code, num, name) {
+    this.code = code;
+    this.num = num;
+    this.name = name;
+}
+// temp store the stk info before confirmed
+var oTempStk = new Array();
+oTempStk[0] = new StockInfo("", "", "");
+oTempStk[1] = new StockInfo("", "", "");
+oTempStk[2] = new StockInfo("", "", "");
+oTempStk[3] = new StockInfo("", "", "");
+oTempStk[4] = new StockInfo("", "", "");
+var oSingleStk = new StockInfo("", "", "");
 
 ////load stored data
 document.addEventListener('DOMContentLoaded', function() {
@@ -32,8 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if($(this).hasClass("edit")) {
             var iStockIndex = $(".stkconfig .stkedit").index(this);
             //Store current value
-            oTempStkCode = bp.stockDetail[iStockIndex].code;
-            oTempStkNum = bp.stockDetail[iStockIndex].num;
+            oTempStk[iStockIndex].code = bp.stockDetail[iStockIndex].code;
+            oTempStk[iStockIndex].num = bp.stockDetail[iStockIndex].num;
+            oTempStk[iStockIndex].name = bp.stockDetail[iStockIndex].name;
 
             var $InputCode = $(".stkconfig .stkcode").eq(iStockIndex).children("input.stkcodeinput");
             $InputCode.removeAttr("disabled");
@@ -41,14 +52,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         $(".checkmark").click(function(){
+            iStockIndex = $(".stkconfig .stkedit").index(this);
+            $InputCode = $(".stkconfig .stkcode").eq(iStockIndex).children("input.stkcodeinput");
             $InputCode.attr("disabled","disabled");
-            saveData(0, oTempStkCode, oTempStkNum);
+            saveData(0, oTempStk[iStockIndex].code, oTempStk[iStockIndex].num);
+            $(this).removeClass().addClass("stkedit icons edit");
         });
         //$("#stkDetail").show();
         //$("#stkSetting").hide();
     });
 })
 
+function tempStorStkInfo(pInput, oStkInfo) {
+     var iIndex = $(".stkcode .stkcodeinput").index(pInput);
+     oTempStk[iIndex] = oStkInfo;
+     $(".stkconfig").eq(iIndex).children(".stkname").html(oTempStk[iIndex].name);
+}
 
 function refreshData() {
     for (var i = 0; i < bp.maxNumBg; i++) {
@@ -84,12 +103,13 @@ var sArrSuggested = new Array();
                         ////Get the first half of the value (Stock Code)
                         sArrVal = liVal.split(" ");
                         $this.val(sArrVal[0]);
-                        //Store data
+                        //Store data 
                         sArrStk = sArrSuggested[indexLi].split(",");
-                        
-                        oTempStkCode = sArrStk[3];
-                        oTempStkNum = sArrStk[2];
-                        alert(oTempStkCode);
+                        oSingleStk.num = sArrStk[2];
+                        oSingleStk.code = sArrStk[3];
+                        oSingleStk.name = sArrStk[4];
+                        //Update the displaed stk name
+                        tempStorStkInfo($this, oSingleStk);
                         //saveData(0, oTempStkCode, oTempStkNum);
                         blus();
                     } else {
@@ -212,9 +232,12 @@ var sArrSuggested = new Array();
                     $this.val(sArrLiVal[0]);
                     //Store data
                     sArrStk = sArrSuggested[indexLi].split(",");
-                    
-                    oTempStkCode = sArrStk[3];
-                    oTempStkNum = sArrStk[2];
+                      
+                    oSingleStk.num = sArrStk[2];
+                    oSingleStk.code = sArrStk[3];
+                    oSingleStk.name = sArrStk[4];
+                    //Update the displaed stk name
+                    tempStorStkInfo($this, oSingleStk);
                     blus();
                 }
             })
