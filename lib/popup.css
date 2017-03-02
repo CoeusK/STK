@@ -6,7 +6,7 @@
   width: 16px;
   height: 16px;
   line-height: 16px;
-  background-image: url(buttons.png?5);
+  background-image: url(buttons.png);
   background-repeat: no-repeat;
   vertical-align: text-top; }
 
@@ -38,7 +38,12 @@
   .icons.cross {
   background-position: -224px 0; }
 
+  .icons.edit {
+  background-position: -32px -64px; }
 
+  .icons.checkmark {
+  background-position: -64px -32px; }
+  
   .button {
   cursor: pointer;
   width: 24px;

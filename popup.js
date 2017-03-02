@@ -1,13 +1,19 @@
 // JavaScript Document
 var bp = chrome.extension.getBackgroundPage();
+
+var oTempStkNum; 
+var oTempStkCode;
+
+
 ////load stored data
 document.addEventListener('DOMContentLoaded', function() {
     for (var i = 0; i < bp.maxNumBg; i++) {
-        document.getElementById("stkCode1").value = bp.stockDetail[i].num;
+        $(".stkconfig .stkcode").eq(i).children("input.stkcodeinput").val(bp.stockDetail[i].num);
+        $(".stkconfig").eq(i).children("span.stkname").html(bp.stockDetail[i].name);
     }
     refreshData();
-    $("#stkSetting").hide();
-    updateConfig();
+    $("#stkDetail").hide();
+    //updateConfig();
 
     $("#setting").click(function(){ 
         $("#stkDetail").hide();
@@ -19,7 +25,28 @@ document.addEventListener('DOMContentLoaded', function() {
         $("#stkSetting").hide();
     });
 
+    //edit stock function
+    $(".stkconfig .edit").click(function(){ 
+        //alert($(".stkconfig .stkedit").index(this))
 
+        if($(this).hasClass("edit")) {
+            var iStockIndex = $(".stkconfig .stkedit").index(this);
+            //Store current value
+            oTempStkCode = bp.stockDetail[iStockIndex].code;
+            oTempStkNum = bp.stockDetail[iStockIndex].num;
+
+            var $InputCode = $(".stkconfig .stkcode").eq(iStockIndex).children("input.stkcodeinput");
+            $InputCode.removeAttr("disabled");
+            $(this).removeClass().addClass("stkedit icons checkmark");
+        }
+
+        $(".checkmark").click(function(){
+            $InputCode.attr("disabled","disabled");
+            saveData(0, oTempStkCode, oTempStkNum);
+        });
+        //$("#stkDetail").show();
+        //$("#stkSetting").hide();
+    });
 })
 
 
@@ -59,7 +86,11 @@ var sArrSuggested = new Array();
                         $this.val(sArrVal[0]);
                         //Store data
                         sArrStk = sArrSuggested[indexLi].split(",");
-                        saveData(0, sArrStk[3], sArrStk[2])
+                        
+                        oTempStkCode = sArrStk[3];
+                        oTempStkNum = sArrStk[2];
+                        alert(oTempStkCode);
+                        //saveData(0, oTempStkCode, oTempStkNum);
                         blus();
                     } else {
                         blus();
@@ -181,7 +212,9 @@ var sArrSuggested = new Array();
                     $this.val(sArrLiVal[0]);
                     //Store data
                     sArrStk = sArrSuggested[indexLi].split(",");
-                    saveData(0, sArrStk[3], sArrStk[2])
+                    
+                    oTempStkCode = sArrStk[3];
+                    oTempStkNum = sArrStk[2];
                     blus();
                 }
             })

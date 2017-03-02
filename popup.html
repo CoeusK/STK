@@ -16,9 +16,12 @@
         .stkcode{width:80px; min-height:1px; text-align:center; float:left; }
         .stkname{width:60px; min-height:1px; text-align:center; float:left; }
         .stkpercent{width:30px; min-height:1px; text-align:center; float:left}
-        .stkmove{width:50px; margin-left:10px; min-height:1px; text-align:center; float:left}
+        .stkmove{width:50px; margin-left:14px; min-height:1px; text-align:center; float:left}
         .stkprice {width:50px; min-height:1px; text-align:center; float:left}
-        input{ width:55px; height:16px; margin:1px 0;  line-height:20px;font:10px/1.8}
+        .stkdelete {margin-left:10px; float:left}
+        .stkedit {margin-left:6px}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        .stkcodeinput{ width:55px; height:16px; margin:1px 0;  line-height:20px;font:10px/1.8;outline:none;border-top:0px;border-left: 0px;border-right: 0px;}
         .stock .on_changes{width:120px; position:absolute; top:47px; list-style:none; background:#FFF; border:1px solid #000; display:none; padding:0px;}
         .stock .on_changes li{margin:2px;padding:2px;}
         .stock .on_changes li.active{ background:#CEE7FF;}
@@ -40,15 +43,14 @@
                   <span class="stkpercent" >涨跌</span>
               </div>     
               <div class="stkdetail">
-                <ul class="on_changes"></ul>
-                <span class="stkcode" > <input id="stkCode1" maxlength="30" name="stkCode1" placeholder="" type="text"/> </span>
+                
+                <span class="stkcode" >  </span>
                 <span class="stkname" ></span>
                 <span class="stkprice" ></span>
                 <span class="stkpercent" ></span>               
               </div> 
             </div>     
 
-        <div class="clear"></div>
 
         <!-- DIV: Program Settings -->
         <div class="stock" id="stkSetting" style="float:left">
@@ -59,15 +61,35 @@
                 <span class="stkcode" >代码</span>
                 <span class="stkname" >名称</span>
                 <span class="stkmove" >移动</span>
+                <span id="stkadd" class="icons plus"></span>
             </div>
-            <div class="stkconfig">
-                <span class="stkcode" > </span>
+
+            <div class="stkconfig" style="clear:left">
+                <span class="stkdelete icons cross"></span>
+                <span class="stkcode" ><input class="stkcodeinput" id="stkCode1" disabled="true" maxlength="30" placeholder="" type="text" /> </span>
+                <ul class="on_changes"></ul>
                 <span class="stkname" > </span>
                 <div class="stkmove">
-                  <span id="moveUp" class="icons arrow-up"></span>
-                  <span id="moveDown" class="icons arrow-down"></span>
+                  <span id="stkup" class="icons arrow-up"></span>
+                  <span id="stkdown" class="icons arrow-down"></span>
                 </div>
+                <span class="stkedit icons edit"></span>
             </div>
+
+          
+             <div class="stkconfig" style="clear:left">
+                <span class="stkdelete icons cross"></span>
+                <span class="stkcode" ><input class="stkcodeinput" id="stkCode2" maxlength="30" name="stkCode1" placeholder="" type="text"/> </span>
+                <ul class="on_changes"></ul>
+                <span class="stkname" > </span>
+                <div class="stkmove">
+                  <span id="stkup" class="icons arrow-up"></span>
+                  <span id="stkdown" class="icons arrow-down"></span>
+                </div>
+                <span class="stkedit icons edit"></span>
+            </div>
+
+            
         </div> 
 
 </body>
