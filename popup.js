@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
             oTempStk[iStockIndex].code = bp.stockDetail[iStockIndex].code;
             oTempStk[iStockIndex].num = bp.stockDetail[iStockIndex].num;
             oTempStk[iStockIndex].name = bp.stockDetail[iStockIndex].name;
-
             var $InputCode = $(".stkconfig .stkcode").eq(iStockIndex).children("input.stkcodeinput");
             $InputCode.removeAttr("disabled");
             $(this).removeClass().addClass("stkedit icons checkmark");
@@ -69,6 +68,14 @@ function tempStorStkInfo(pInput, oStkInfo) {
      $(".stkconfig").eq(iIndex).children(".stkname").html(oTempStk[iIndex].name);
 }
 
+
+function saveData(iId, sCode, sNum) {
+    localStorage["stkCode" + iId] = bp.stockDetail[iId].code = sCode;
+    localStorage["stkNum" + iId] = bp.stockDetail[iId].num = sNum;
+
+    bp.getData();
+}
+
 function refreshData() {
     for (var i = 0; i < bp.maxNumBg; i++) {
 
@@ -84,6 +91,9 @@ function updateConfig() {
     $(".stkconfig .stkcode").eq(0).html(bp.stockDetail[0].code); 
     $(".stkconfig .stkname").eq(0).html(bp.stockDetail[0].name); 
 }
+
+
+
 //Indicate if it will be the first key Down
 iFirstKeyDown = 1;
 bp.popupRefresh = refreshData;
@@ -144,6 +154,8 @@ var sArrSuggested = new Array();
             function valChange() {
                 iFirstKeyDown = 1;
                 var tex = $this.val(); //输入框的值
+                //alert(tex);
+
                 //Own
                 $.ajax({
                     type: "GET",
@@ -218,7 +230,10 @@ var sArrSuggested = new Array();
             }
             //输入框值发生改变的时候执行函数
             $(this).bind("input", function() {
-                    valChange();
+                //var sClsName = $(this).attr("class");
+                //var iInputIndex = $("input."+sClsName).index(this);
+                //alert(iInputIndex);               
+                valChange();
                 })
                 //按键盘的上下移动LI的背景色
             $this.keydown(function(event) {
@@ -245,8 +260,3 @@ var sArrSuggested = new Array();
     })
 })(jQuery)
 
-function saveData(iId, sCode, sNum) {
-    localStorage["stkCode" + iId] = bp.stockDetail[iId].code = sCode;
-    localStorage["stkNum" + iId] = bp.stockDetail[iId].num = sNum;
-    bp.getData();
-}

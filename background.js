@@ -17,6 +17,7 @@ function Stock(code, num, name, curPrice, percent, active) {
     this.curPrice = curPrice;
     this.percent = percent;
 }
+
 var stockDetail = new Array();
 stockDetail[0] = new Stock("sh000001", "000001", "", 0.0, 0.0, 1);
 stockDetail[1] = new Stock("", "", "", 0.0, 0.0, 0);

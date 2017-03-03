@@ -1,5 +1,5 @@
 $(function() {
-    $("#stkCode1").changeTips({
+    $(".stkcodeinput").changeTips({
         divTip: ".on_changes"
     });
 })
