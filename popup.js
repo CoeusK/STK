@@ -36,10 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     //edit stock function
-    $(".stkconfig .edit").click(function(){ 
-        //alert($(".stkconfig .stkedit").index(this))
-
+    $(".stkconfig .stkedit").on("click", function(){ 
         if($(this).hasClass("edit")) {
+            console.log("edit branch");
             var iStockIndex = $(".stkconfig .stkedit").index(this);
             //Store current value
             oTempStk[iStockIndex].code = bp.stockDetail[iStockIndex].code;
@@ -48,17 +47,14 @@ document.addEventListener('DOMContentLoaded', function() {
             var $InputCode = $(".stkconfig .stkcode").eq(iStockIndex).children("input.stkcodeinput");
             $InputCode.removeAttr("disabled");
             $(this).removeClass().addClass("stkedit icons checkmark");
-        }
-
-        $(".checkmark").click(function(){
+        } else {
+            console.log("checkmark branch");
             iStockIndex = $(".stkconfig .stkedit").index(this);
             $InputCode = $(".stkconfig .stkcode").eq(iStockIndex).children("input.stkcodeinput");
             $InputCode.attr("disabled","disabled");
-            saveData(0, oTempStk[iStockIndex].code, oTempStk[iStockIndex].num);
+            saveData(iStockIndex, oTempStk[iStockIndex].code, oTempStk[iStockIndex].num);
             $(this).removeClass().addClass("stkedit icons edit");
-        });
-        //$("#stkDetail").show();
-        //$("#stkSetting").hide();
+        };        
     });
 })
 
@@ -72,7 +68,7 @@ function tempStorStkInfo(pInput, oStkInfo) {
 function saveData(iId, sCode, sNum) {
     localStorage["stkCode" + iId] = bp.stockDetail[iId].code = sCode;
     localStorage["stkNum" + iId] = bp.stockDetail[iId].num = sNum;
-
+    //alert("stkCode" + iId);
     bp.getData();
 }
 
@@ -80,6 +76,7 @@ function refreshData() {
     for (var i = 0; i < bp.maxNumBg; i++) {
 
         //if(bp.stockDetail[i].active == 1) {
+          $(".stkdetail .stkcode").eq(i).html(bp.stockDetail[i].num);
           $(".stkdetail .stkname").eq(i).html(bp.stockDetail[i].name);
           $(".stkdetail .stkprice").eq(i).html(bp.stockDetail[i].curPrice);
           $(".stkdetail .stkpercent").eq(i).html(bp.stockDetail[i].percent + "%");
@@ -105,9 +102,11 @@ var sArrSuggested = new Array();
                 divTip: ""
             }, value)
             var $this = $(this);
+            //Find the matching UL for tips
+            var $CurUL = $(this).parent().next("ul"); 
             var indexLi = 0;
             //点击document隐藏下拉层
-            $(document).click(function(event) {
+            $CurUL.click(function(event) {
                     if ($(event.target).attr("class") == value.divTip || $(event.target).is("li")) {
                         var liVal = $(event.target).text();
                         ////Get the first half of the value (Stock Code)
@@ -120,6 +119,7 @@ var sArrSuggested = new Array();
                         oSingleStk.name = sArrStk[4];
                         //Update the displaed stk name
                         tempStorStkInfo($this, oSingleStk);
+                        //alert("aaa");
                         //saveData(0, oTempStkCode, oTempStkNum);
                         blus();
                     } else {
@@ -128,18 +128,18 @@ var sArrSuggested = new Array();
                 })
                 //隐藏下拉层
             function blus() {
-                $(value.divTip).hide();
+                $CurUL.hide();
             }
             //键盘上下执行的函数
             function keychang(up) {
                 if (up == "up") {
                     if (indexLi == 0) {
-                        indexLi = $(value.divTip).children().length - 1;
+                        indexLi = $CurUL.children().length - 1;
                     } else {
                         indexLi--;
                     }
                 } else {
-                    if (indexLi == $(value.divTip).children().length - 1) {
+                    if (indexLi == $CurUL.children().length - 1) {
                         indexLi = 0;
                     } else if (!iFirstKeyDown) {
                         indexLi++;
@@ -148,7 +148,7 @@ var sArrSuggested = new Array();
                         iFirstKeyDown = 0;
                     }
                 }
-                $(value.divTip).children().eq(indexLi).addClass("active").siblings().removeClass();
+                $CurUL.children().eq(indexLi).addClass("active").siblings().removeClass();
             }
             //值发生改变时
             function valChange() {
@@ -168,16 +168,16 @@ var sArrSuggested = new Array();
                             blus();
                         } else {
                             //// Clear drop down hints
-                            $(value.divTip).empty();
+                            $CurUL.empty();
                             sArrSuggested = sArrSegment[1].split(";");
                             //alert(sArrSuggested[1]);
                             for (i = 0; i < sArrSuggested.length; i++) {
                                 sArrSingleStk = sArrSuggested[i].split(",");
-                                $(value.divTip).append("<li email=\"stk" + i + "\">" + sArrSingleStk[2] + "  " + sArrSingleStk[4] + "</li>");
+                                $CurUL.append("<li email=\"stk" + i + "\">" + sArrSingleStk[2] + "  " + sArrSingleStk[4] + "</li>");
                             }
                             // alert($(this).value);
                             //鼠标点击和悬停LI
-                            $(value.divTip).children().
+                            $CurUL.children().
                             hover(function() {
                                 indexLi = $(this).index(); //获取当前鼠标悬停时的LI索引值;
                                 $(this).addClass("active").siblings().removeClass();
@@ -188,7 +188,7 @@ var sArrSuggested = new Array();
                 if ($this.val() == "") {
                     blus();
                 } else {
-                    $(value.divTip).show();
+                    $CurUL.show();
                 }
                 /*
                 //让提示层显示，并对里面的LI遍历
@@ -229,10 +229,7 @@ var sArrSuggested = new Array();
                 */
             }
             //输入框值发生改变的时候执行函数
-            $(this).bind("input", function() {
-                //var sClsName = $(this).attr("class");
-                //var iInputIndex = $("input."+sClsName).index(this);
-                //alert(iInputIndex);               
+            $(this).bind("input", function() {              
                 valChange();
                 })
                 //按键盘的上下移动LI的背景色
@@ -242,7 +239,7 @@ var sArrSuggested = new Array();
                 } else if (event.which == 40) { //向下
                     keychang()
                 } else if (event.which == 13) { //回车
-                    var liVal = $(value.divTip).children().eq(indexLi).text();
+                    var liVal = $CurUL.children().eq(indexLi).text();
                     sArrLiVal = liVal.split(" ");
                     $this.val(sArrLiVal[0]);
                     //Store data

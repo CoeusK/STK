@@ -20,9 +20,9 @@
         .stkprice {width:50px; min-height:1px; text-align:center; float:left}
         .stkdelete {margin-left:10px; float:left}
         .stkedit {margin-left:6px}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        .stkconfig {position:relative}                                                   
         .stkcodeinput{ width:55px; height:16px; margin:1px 0;  line-height:20px;font:10px/1.8;outline:none;border-top:0px;border-left: 0px;border-right: 0px;}
-        .stock .on_changes{width:120px; position:absolute; top:47px; list-style:none; background:#FFF; border:1px solid #000; display:none; padding:0px;}
+        .stock .on_changes{width:120px; position:absolute; top:24px; list-style:none; background:#FFF; border:1px solid #000; display:none; padding:0px; z-index:1;}
         .stock .on_changes li{margin:2px;padding:2px;}
         .stock .on_changes li.active{ background:#CEE7FF;}
         .clear{clear:both;}
@@ -82,7 +82,7 @@
              <div class="stkconfig" style="clear:left">
                 <span class="stkdelete icons cross"></span>
                 <span class="stkcode" >
-                    <input class="stkcodeinput" id="stkCode1" maxlength="30" name="stkCode1" placeholder="" type="text"/>
+                    <input class="stkcodeinput" id="stkCode1" disabled="true" maxlength="30" name="stkCode1" placeholder="" type="text"/>
                 </span>
                 <ul class="on_changes"></ul>
                 <span class="stkname" > </span>
@@ -93,6 +93,19 @@
                 <span class="stkedit icons edit"></span>
             </div>
 
+             <div class="stkconfig" style="clear:left">
+                <span class="stkdelete icons cross"></span>
+                <span class="stkcode" >
+                    <input class="stkcodeinput" id="stkCode3" disabled="true" maxlength="30" name="stkCode1" placeholder="" type="text"/>
+                </span>
+                <ul class="on_changes"></ul>
+                <span class="stkname" > </span>
+                <div class="stkmove">
+                  <span id="stkup" class="icons arrow-up"></span>
+                  <span id="stkdown" class="icons arrow-down"></span>
+                </div>
+                <span class="stkedit icons edit"></span>
+            </div>
             
         </div> 
 
