@@ -18,7 +18,7 @@
         .stkpercent{width:30px; min-height:1px; text-align:center; float:left}
         .stkmove{width:50px; margin-left:14px; min-height:1px; text-align:center; float:left}
         .stkprice {width:50px; min-height:1px; text-align:center; float:left}
-        .stkdelete {margin-left:10px; float:left}
+        .stkpreicon {margin-left:10px; float:left}
         .stkedit {margin-left:6px}
         .stkconfig {position:relative}                                                   
         .stkcodeinput{ width:55px; height:16px; margin:1px 0;  line-height:20px;font:10px/1.8;outline:none;border-top:0px;border-left: 0px;border-right: 0px;}
@@ -32,7 +32,7 @@
     </head>
     <body>
         <!-- DIV: Stock Details-->
-            <div class="stock" id="stkDetail">
+            <div class="stock" id="stkDetail" style="float:left">
               <div class="button" title="Settings" style="float:left">
                   <span id="setting" class="icons cog"></span>
               </div >
@@ -42,8 +42,8 @@
                   <span class="stkprice" >当前</span>
                   <span class="stkpercent" >涨跌</span>
               </div>     
-              <div class="stkdetail">
-                
+              <div class="stkdetail" style="clear:left">
+                <span class="stkpreicon icons star"></span>
                 <span class="stkcode" >  </span>
                 <span class="stkname" ></span>
                 <span class="stkprice" ></span>
@@ -61,51 +61,24 @@
                 <span class="stkcode" >代码</span>
                 <span class="stkname" >名称</span>
                 <span class="stkmove" >移动</span>
-                <span id="stkadd" class="icons plus"></span>
+                <span class="icons plus"></span>
             </div>
 
             <div class="stkconfig" style="clear:left">
-                <span class="stkdelete icons cross"></span>
+                <span class="stkpreicon icons cross"></span>
                 <span class="stkcode" >
-                    <input class="stkcodeinput" id="stkCode0" disabled="true" maxlength="30" placeholder="" type="text" /> 
+                    <input class="stkcodeinput" disabled="true" maxlength="30" placeholder="" type="text" /> 
                 </span>
                 <ul class="on_changes"></ul>
                 <span class="stkname" > </span>
                 <div class="stkmove">
-                  <span id="stkup" class="icons arrow-up"></span>
-                  <span id="stkdown" class="icons arrow-down"></span>
+                  <span class="icons arrow-up"></span>
+                  <span class="icons arrow-down"></span>
                 </div>
                 <span class="stkedit icons edit"></span>
             </div>
 
           
-             <div class="stkconfig" style="clear:left">
-                <span class="stkdelete icons cross"></span>
-                <span class="stkcode" >
-                    <input class="stkcodeinput" id="stkCode1" disabled="true" maxlength="30" name="stkCode1" placeholder="" type="text"/>
-                </span>
-                <ul class="on_changes"></ul>
-                <span class="stkname" > </span>
-                <div class="stkmove">
-                  <span id="stkup" class="icons arrow-up"></span>
-                  <span id="stkdown" class="icons arrow-down"></span>
-                </div>
-                <span class="stkedit icons edit"></span>
-            </div>
-
-             <div class="stkconfig" style="clear:left">
-                <span class="stkdelete icons cross"></span>
-                <span class="stkcode" >
-                    <input class="stkcodeinput" id="stkCode3" disabled="true" maxlength="30" name="stkCode1" placeholder="" type="text"/>
-                </span>
-                <ul class="on_changes"></ul>
-                <span class="stkname" > </span>
-                <div class="stkmove">
-                  <span id="stkup" class="icons arrow-up"></span>
-                  <span id="stkdown" class="icons arrow-down"></span>
-                </div>
-                <span class="stkedit icons edit"></span>
-            </div>
             
         </div> 
 

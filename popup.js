@@ -17,6 +17,14 @@ var oSingleStk = new StockInfo("", "", "");
 
 ////load stored data
 document.addEventListener('DOMContentLoaded', function() {
+    
+    //Clone all the rows
+    for (var i = 1; i < bp.maxNumBg; i++) {
+        $(".stkdetail").eq(0).clone().appendTo("#stkDetail");
+        $(".stkconfig").eq(0).clone().appendTo("#stkSetting");
+    }
+    
+
     for (var i = 0; i < bp.maxNumBg; i++) {
         $(".stkconfig .stkcode").eq(i).children("input.stkcodeinput").val(bp.stockDetail[i].num);
         $(".stkconfig").eq(i).children("span.stkname").html(bp.stockDetail[i].name);
