@@ -1,5 +1,6 @@
 // JavaScript Document
 var bp = chrome.extension.getBackgroundPage();
+var stkCount = bp.totalStkNum;
 
 function StockInfo(code, num, name) {
     this.code = code;
@@ -18,17 +19,21 @@ var oSingleStk = new StockInfo("", "", "");
 ////load stored data
 document.addEventListener('DOMContentLoaded', function() {
     
-    //Clone all the rows
-    for (var i = 1; i < bp.maxNumBg; i++) {
-        $(".stkdetail").eq(0).clone().appendTo("#stkDetail");
-        $(".stkconfig").eq(0).clone().appendTo("#stkSetting");
+    //Clone all the rows (clone stkCount-1 times)
+    for (var i = 1; i < stkCount; i++) {
+        $(".stkdetail").eq(0).clone(true).appendTo("#stkDetail");
+        $(".stkconfig").eq(0).clone(true).appendTo("#stkSetting");
     }
     
 
-    for (var i = 0; i < bp.maxNumBg; i++) {
+    for (var i = 0; i < stkCount; i++) {
         $(".stkconfig .stkcode").eq(i).children("input.stkcodeinput").val(bp.stockDetail[i].num);
         $(".stkconfig").eq(i).children("span.stkname").html(bp.stockDetail[i].name);
     }
+
+    //Mark the favorite stock
+    $(".stkfavorite").eq(bp.favStkInd).removeClass("star").addClass("gold-star");
+
     refreshData();
     $("#stkDetail").hide();
     //updateConfig();
@@ -38,9 +43,42 @@ document.addEventListener('DOMContentLoaded', function() {
         $("#stkSetting").show();
     });
 
-    $("#back2detail").click(function(){
+    $("#back2detail").on("click",function(){
         $("#stkDetail").show();
         $("#stkSetting").hide();
+    });
+
+    $(".stkfavorite").on("click", function(){
+        $(".gold-star").removeClass("gold-star").addClass("star");
+        $(this).addClass("gold-star");
+        localStorage["favStkIndex"] = bp.favStkInd = $(".stkfavorite").index(this);
+        bp.badgeRefresh();
+    });
+
+    $(".arrow-up").on("click", function(){
+      var curInd = $(".arrow-up").index(this);
+      if (curInd > 0) {
+        var oTemp = bp.stockDetail[curInd];
+        bp.stockDetail[curInd] = bp.stockDetail[curInd - 1];
+        bp.stockDetail[curInd - 1] = oTemp;
+        bp.saveStk(curInd);
+        bp.saveStk(curInd-1);
+        $(".stkconfig").eq(curInd).detach().insertBefore($(".stkconfig").eq(curInd-1));
+        bp.getData();
+      }
+    });
+
+    $(".arrow-down").on("click", function(){
+      var curInd = $(".arrow-down").index(this);
+      if (curInd < (stkCount-1)) {
+        var oTemp = bp.stockDetail[curInd];
+        bp.stockDetail[curInd] = bp.stockDetail[curInd + 1];
+        bp.stockDetail[curInd + 1] = oTemp;
+        bp.saveStk(curInd);
+        bp.saveStk(curInd + 1);
+        $(".stkconfig").eq(curInd + 1).detach().insertBefore($(".stkconfig").eq(curInd));
+        bp.getData();
+      }
     });
 
     //edit stock function
@@ -74,14 +112,15 @@ function tempStorStkInfo(pInput, oStkInfo) {
 
 
 function saveData(iId, sCode, sNum) {
-    localStorage["stkCode" + iId] = bp.stockDetail[iId].code = sCode;
-    localStorage["stkNum" + iId] = bp.stockDetail[iId].num = sNum;
+    bp.stockDetail[iId].code = sCode;
+    bp.stockDetail[iId].num = sNum;
+    bp.saveStk(iId);
     //alert("stkCode" + iId);
     bp.getData();
 }
 
 function refreshData() {
-    for (var i = 0; i < bp.maxNumBg; i++) {
+    for (var i = 0; i < stkCount; i++) {
 
         //if(bp.stockDetail[i].active == 1) {
           $(".stkdetail .stkcode").eq(i).html(bp.stockDetail[i].num);

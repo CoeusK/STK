@@ -3,12 +3,12 @@ var dr = 100;
 var dg = 150;
 var db = 120;
 var defTimeout = 15000;
-var maxItemNum = 5;
+var totalStkNum = 3;
 var defMaxNum = 3;
 var req = new XMLHttpRequest();
 var popupRefresh = null;
 var rates = null;
-var defPrimaryItemId = 0;
+
 
 function Stock(code, num, name, curPrice, percent, active) {
     this.code = code;
@@ -47,9 +47,11 @@ var g = parseInt(localStorage.g, 10) || dg
 var b = parseInt(localStorage.b, 10) || db
 var fil = localStorage.fil || ""
 var maxNumBg = parseInt(localStorage.maxNumBg, 10) || defMaxNum;
+var favStkInd = parseInt(localStorage.favStkIndex, 10) || 0;
 var refreshInterval = parseInt(localStorage.refreshInterval, 10) || defTimeout;
-var priItemId = parseInt(localStorage.priItemId, 10) || defPrimaryItemId;
-for (var i = 0; i < maxNumBg; i++) {
+totalStkNum = parseInt(localStorage.totalStkNum, 10) || totalStkNum;
+
+for (var i = 0; i < totalStkNum; i++) {
     stockDetail[i].code = localStorage.getItem("stkCode" + i) || "sh000001";
     stockDetail[i].num = localStorage.getItem("stkNum" + i) || "000001";
 }
@@ -60,34 +62,46 @@ chrome.browserAction.setBadgeBackgroundColor({
 });
 
 function badgeRefresh() {
-    if (stockDetail[priItemId].percent >= 0) {
+    if (stockDetail[favStkInd].percent >= 0) {
         chrome.browserAction.setBadgeBackgroundColor({
             color: [150, 0, 0, 255]
         });
         chrome.browserAction.setBadgeText({
-            text: stockDetail[priItemId].percent.toString()
+            text: stockDetail[favStkInd].percent.toString()
         });
     } else {
         chrome.browserAction.setBadgeBackgroundColor({
             color: [0, 150, 0, 255]
         });
         chrome.browserAction.setBadgeText({
-            text: stockDetail[priItemId].percent.toString().substr(1)
+            text: stockDetail[favStkInd].percent.toString().substr(1)
         });
     }
+    titleRefresh();
+}
+
+function titleRefresh() {
+    var strTitle = "";
+    for (i = 0; i < totalStkNum; i++) {
+       strTitle = strTitle + stockDetail[i].name + " " + stockDetail[i].curPrice + " " + stockDetail[i].percent + "%" + "\n";
+    }
     chrome.browserAction.setTitle({
-        title: stockDetail[priItemId].code + " " + stockDetail[priItemId].name + " " + stockDetail[priItemId].curPrice + " " + stockDetail[priItemId].percent + "%"
-    });
-    //alert(stockDetail[0][priItemId]+"  "+stockDetail[2][priItemId]);
+        title: strTitle
+    });    
+}
+
+function saveStk(id) {
+    localStorage["stkCode" + id] = stockDetail[id].code;
+    localStorage["stkNum" + id] = stockDetail[id].num;
 }
 
 function getData() {
     ////  form the httpRequest
     httpReq = "http://hq.sinajs.cn/list=";
-    for (i = 0; i < maxNumBg; i++) {
+    for (i = 0; i < totalStkNum; i++) {
         httpReq = httpReq + stockDetail[i].code;
         //// Add "," except the last one
-        if (i != (maxNumBg - 1)) httpReq = httpReq + ",";
+        if (i != (totalStkNum - 1)) httpReq = httpReq + ",";
     }
     //alert(httpReq);
     req.open("GET", httpReq)
@@ -133,7 +147,7 @@ function refreshData() {
 
 function parseStockData(response) {
     rows = response.split("var");
-    for (i = 1; i <= maxNumBg; i++) {
+    for (i = 1; i <= totalStkNum; i++) {
         strArray = rows[i].split("=");
         ////Check if it is a empyt response
         if (strArray[1].length > 4) {
@@ -141,7 +155,8 @@ function parseStockData(response) {
             //alert(rawData);
             dataArray = rawData.split(",");
             stockDetail[i - 1].name = dataArray[0];
-            stockDetail[i - 1].curPrice = dataArray[3];
+            //keep 2 digits after .
+            stockDetail[i - 1].curPrice = dataArray[3].substring(0, dataArray[3].length - 1);
             ////Calculate Percentage
             stockDetail[i - 1].percent = (Math.floor((dataArray[3] - dataArray[2]) / dataArray[2] * 10000 + 0.5)) / 100;
             //alert(stockDetail[0][i-1]+"  "+stockDetail[1][i-1]+"  "+stockDetail[2][i-1]+"  "+stockDetail[3][i-1]);
