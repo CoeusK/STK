@@ -83,11 +83,11 @@ function badgeRefresh() {
 function titleRefresh() {
     var strTitle = "";
     for (i = 0; i < totalStkNum; i++) {
-       strTitle = strTitle + stockDetail[i].name + " " + stockDetail[i].curPrice + " " + stockDetail[i].percent + "%" + "\n";
+        strTitle = strTitle + stockDetail[i].name + " " + stockDetail[i].curPrice + " " + stockDetail[i].percent + "%" + "\n";
     }
     chrome.browserAction.setTitle({
         title: strTitle
-    });    
+    });
 }
 
 function saveStk(id) {
@@ -156,7 +156,7 @@ function parseStockData(response) {
             dataArray = rawData.split(",");
             stockDetail[i - 1].name = dataArray[0];
             //keep 2 digits after .
-            stockDetail[i - 1].curPrice = dataArray[3].substring(0, dataArray[3].length - 1);
+            stockDetail[i - 1].curPrice = dataArray[3].substring(0, dataArray[3].indexOf(".") + 3);
             ////Calculate Percentage
             stockDetail[i - 1].percent = (Math.floor((dataArray[3] - dataArray[2]) / dataArray[2] * 10000 + 0.5)) / 100;
             //alert(stockDetail[0][i-1]+"  "+stockDetail[1][i-1]+"  "+stockDetail[2][i-1]+"  "+stockDetail[3][i-1]);

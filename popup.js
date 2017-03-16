@@ -18,13 +18,24 @@ var oSingleStk = new StockInfo("", "", "");
 
 ////load stored data
 document.addEventListener('DOMContentLoaded', function() {
-    
+
+    $(function() {
+        $(".stkcodeinput").eq(0).changeTips({
+            divTip: ".on_changes"
+        });
+    })
+
     //Clone all the rows (clone stkCount-1 times)
     for (var i = 1; i < stkCount; i++) {
-        $(".stkdetail").eq(0).clone(true).appendTo("#stkDetail");
-        $(".stkconfig").eq(0).clone(true).appendTo("#stkSetting");
+        $(".stkdetail").eq(0).clone(true, true).appendTo("#stkDetail");
+        $(".stkconfig").eq(0).clone(true, true).appendTo("#stkSetting");
+        $(function() {
+            $(".stkcodeinput").eq(0).changeTips({
+                divTip: ".on_changes"
+            });
+        })
     }
-    
+
 
     for (var i = 0; i < stkCount; i++) {
         $(".stkconfig .stkcode").eq(i).children("input.stkcodeinput").val(bp.stockDetail[i].num);
@@ -35,55 +46,55 @@ document.addEventListener('DOMContentLoaded', function() {
     $(".stkfavorite").eq(bp.favStkInd).removeClass("star").addClass("gold-star");
 
     refreshData();
-    $("#stkDetail").hide();
+    $("#stkSetting").hide();
     //updateConfig();
 
-    $("#setting").click(function(){ 
+    $("#setting").click(function() {
         $("#stkDetail").hide();
         $("#stkSetting").show();
     });
 
-    $("#back2detail").on("click",function(){
+    $("#back2detail").on("click", function() {
         $("#stkDetail").show();
         $("#stkSetting").hide();
     });
 
-    $(".stkfavorite").on("click", function(){
+    $(".stkfavorite").on("click", function() {
         $(".gold-star").removeClass("gold-star").addClass("star");
         $(this).addClass("gold-star");
         localStorage["favStkIndex"] = bp.favStkInd = $(".stkfavorite").index(this);
         bp.badgeRefresh();
     });
 
-    $(".arrow-up").on("click", function(){
-      var curInd = $(".arrow-up").index(this);
-      if (curInd > 0) {
-        var oTemp = bp.stockDetail[curInd];
-        bp.stockDetail[curInd] = bp.stockDetail[curInd - 1];
-        bp.stockDetail[curInd - 1] = oTemp;
-        bp.saveStk(curInd);
-        bp.saveStk(curInd-1);
-        $(".stkconfig").eq(curInd).detach().insertBefore($(".stkconfig").eq(curInd-1));
-        bp.getData();
-      }
+    $(".arrow-up").on("click", function() {
+        var curInd = $(".arrow-up").index(this);
+        if (curInd > 0) {
+            var oTemp = bp.stockDetail[curInd];
+            bp.stockDetail[curInd] = bp.stockDetail[curInd - 1];
+            bp.stockDetail[curInd - 1] = oTemp;
+            bp.saveStk(curInd);
+            bp.saveStk(curInd - 1);
+            $(".stkconfig").eq(curInd).detach().insertBefore($(".stkconfig").eq(curInd - 1));
+            bp.getData();
+        }
     });
 
-    $(".arrow-down").on("click", function(){
-      var curInd = $(".arrow-down").index(this);
-      if (curInd < (stkCount-1)) {
-        var oTemp = bp.stockDetail[curInd];
-        bp.stockDetail[curInd] = bp.stockDetail[curInd + 1];
-        bp.stockDetail[curInd + 1] = oTemp;
-        bp.saveStk(curInd);
-        bp.saveStk(curInd + 1);
-        $(".stkconfig").eq(curInd + 1).detach().insertBefore($(".stkconfig").eq(curInd));
-        bp.getData();
-      }
+    $(".arrow-down").on("click", function() {
+        var curInd = $(".arrow-down").index(this);
+        if (curInd < (stkCount - 1)) {
+            var oTemp = bp.stockDetail[curInd];
+            bp.stockDetail[curInd] = bp.stockDetail[curInd + 1];
+            bp.stockDetail[curInd + 1] = oTemp;
+            bp.saveStk(curInd);
+            bp.saveStk(curInd + 1);
+            $(".stkconfig").eq(curInd + 1).detach().insertBefore($(".stkconfig").eq(curInd));
+            bp.getData();
+        }
     });
 
     //edit stock function
-    $(".stkconfig .stkedit").on("click", function(){ 
-        if($(this).hasClass("edit")) {
+    $(".stkconfig .stkedit").on("click", function() {
+        if ($(this).hasClass("edit")) {
             console.log("edit branch");
             var iStockIndex = $(".stkconfig .stkedit").index(this);
             //Store current value
@@ -97,17 +108,17 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("checkmark branch");
             iStockIndex = $(".stkconfig .stkedit").index(this);
             $InputCode = $(".stkconfig .stkcode").eq(iStockIndex).children("input.stkcodeinput");
-            $InputCode.attr("disabled","disabled");
+            $InputCode.attr("disabled", "disabled");
             saveData(iStockIndex, oTempStk[iStockIndex].code, oTempStk[iStockIndex].num);
             $(this).removeClass().addClass("stkedit icons edit");
-        };        
+        };
     });
 })
 
 function tempStorStkInfo(pInput, oStkInfo) {
-     var iIndex = $(".stkcode .stkcodeinput").index(pInput);
-     oTempStk[iIndex] = oStkInfo;
-     $(".stkconfig").eq(iIndex).children(".stkname").html(oTempStk[iIndex].name);
+    var iIndex = $(".stkcode .stkcodeinput").index(pInput);
+    oTempStk[iIndex] = oStkInfo;
+    $(".stkconfig").eq(iIndex).children(".stkname").html(oTempStk[iIndex].name);
 }
 
 
@@ -123,17 +134,17 @@ function refreshData() {
     for (var i = 0; i < stkCount; i++) {
 
         //if(bp.stockDetail[i].active == 1) {
-          $(".stkdetail .stkcode").eq(i).html(bp.stockDetail[i].num);
-          $(".stkdetail .stkname").eq(i).html(bp.stockDetail[i].name);
-          $(".stkdetail .stkprice").eq(i).html(bp.stockDetail[i].curPrice);
-          $(".stkdetail .stkpercent").eq(i).html(bp.stockDetail[i].percent + "%");
+        $(".stkdetail .stkcode").eq(i).html(bp.stockDetail[i].num);
+        $(".stkdetail .stkname").eq(i).html(bp.stockDetail[i].name);
+        $(".stkdetail .stkprice").eq(i).html(bp.stockDetail[i].curPrice);
+        $(".stkdetail .stkpercent").eq(i).html(bp.stockDetail[i].percent + "%");
         //}
     }
 }
 
 function updateConfig() {
-    $(".stkconfig .stkcode").eq(0).html(bp.stockDetail[0].code); 
-    $(".stkconfig .stkname").eq(0).html(bp.stockDetail[0].name); 
+    $(".stkconfig .stkcode").eq(0).html(bp.stockDetail[0].code);
+    $(".stkconfig .stkname").eq(0).html(bp.stockDetail[0].name);
 }
 
 
@@ -150,7 +161,7 @@ var sArrSuggested = new Array();
             }, value)
             var $this = $(this);
             //Find the matching UL for tips
-            var $CurUL = $(this).parent().next("ul"); 
+            var $CurUL = $(this).parent().next("ul");
             var indexLi = 0;
             //点击document隐藏下拉层
             $CurUL.click(function(event) {
@@ -276,8 +287,8 @@ var sArrSuggested = new Array();
                 */
             }
             //输入框值发生改变的时候执行函数
-            $(this).bind("input", function() {              
-                valChange();
+            $(this).bind("input", function() {
+                    valChange();
                 })
                 //按键盘的上下移动LI的背景色
             $this.keydown(function(event) {
@@ -291,7 +302,7 @@ var sArrSuggested = new Array();
                     $this.val(sArrLiVal[0]);
                     //Store data
                     sArrStk = sArrSuggested[indexLi].split(",");
-                      
+
                     oSingleStk.num = sArrStk[2];
                     oSingleStk.code = sArrStk[3];
                     oSingleStk.name = sArrStk[4];
@@ -303,4 +314,3 @@ var sArrSuggested = new Array();
         }
     })
 })(jQuery)
-
